@@ -10,6 +10,8 @@ const log = require('./log');
 const expenses = require('./expenses/builder');
 
 function setup(app) {
+    const apiEndpoint = '/api';
+
     app.use((req, _resp, next) => {
         log.trace(`${req.method}: ${req.path}`);
         next();
@@ -19,7 +21,7 @@ function setup(app) {
 
     auth.setup(app, {
         authPathPrefix: '/auth',
-        apiPathPrefix: '/api',
+        apiPathPrefix: apiEndpoint,
         loginSuccessRedirect: '/',
         loginFailureRedirect: '/sorry.html',
         isAnonymousReq: ({ path }) => {
@@ -33,7 +35,10 @@ function setup(app) {
         app.use('/', express.static(config.staticFilesDir));
     }
 
-    app.use('/api', expenses());
+    app.use(apiEndpoint, expenses());
+    app.use(apiEndpoint, (req, resp) => {
+        resp.status(404).send(); // don't use HTML5 history fallback for API
+    });
     if (config.staticFilesDir) {
         app.use(html5Fallback('index.html', { root: config.staticFilesDir }));
     }
