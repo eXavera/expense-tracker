@@ -56,7 +56,7 @@ const validationRules = {
         })
     },
     get: {
-        query: Joi.object({
+        params: Joi.object({
             kind: Joi.string()
                 .strict(true)
                 .required()
@@ -88,11 +88,11 @@ function ExpenseCtrl(expensesRepo) {
     );
 
     router.get(
-        '/expense',
+        '/expense/:kind',
         validate(validationRules.get, { keyByField: true }),
         hanleErrors(async (req, resp) => {
             const entitites = await expensesRepo.getAsync({
-                kindId: mapper.kindCode.toId(req.query.kind)
+                kindId: mapper.kindCode.toId(req.params.kind)
             });
             log.info(`returning ${entitites.length} expense records`);
 

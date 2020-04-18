@@ -62,7 +62,7 @@ export default {
         },
         reload: async function() {
             try {
-                const resp = await fetch('api/expense?kind=' + this.selectedKindCode);
+                const resp = await fetch('api/expense/' + this.selectedKindCode);
                 if (resp.status === 200) {
                     this.expenses = (await resp.json()).map(i => ({
                         date: formatDate(i.time),
