@@ -21,6 +21,7 @@
     "express-history-api-fallback": "^2.2.1",
     "express-session": "^1.17.0",
     "express-validation": "^3.0.2",
+    "knex": "^0.20.15",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "sqlite3": "^4.1.1",

@@ -10,6 +10,7 @@ module.exports = {
     port: Number(env.PORT),
     sessionSecert: env.SESSION_SECRET,
     dbFileName: env.DB_FILE_NAME,
+    debugDb: env.DB_DEBUG === '1',
     googleAuth: {
         clientID: env.GOOGLE_AUTH_CLIENT_ID,
         clientSecret: env.GOOGLE_AUTH_CLIENT_SECRET,
