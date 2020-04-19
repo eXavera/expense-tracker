@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import KindSelector from './KindSelector';
+import KindSelector from '../common/KindSelector';
 
 export default {
     components: {

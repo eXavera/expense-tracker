@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import KindSelector from './KindSelector';
+import KindSelector from '../common/KindSelector';
 
 const currencyFormatter = new Intl.NumberFormat(undefined, {
     style: 'currency',

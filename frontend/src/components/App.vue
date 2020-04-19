@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ErrorBox from './components/ErrorBox';
+import ErrorBox from './ErrorBox';
 
 export default {
     name: 'App',

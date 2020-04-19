@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import expenseKinds from '../../../backend/src/expense-kinds';
+import expenseKinds from '../../../../backend/src/expense-kinds';
 
 export default {
     data: function() {

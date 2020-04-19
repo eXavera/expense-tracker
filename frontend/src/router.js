@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import AddExpense from './components/AddExpense';
-import ListExpenses from './components/ListExpenses';
-import NotFound from './components/NotFound';
+import AddPage from './components/add/AddPage';
+import ListPage from './components/list/ListPage';
+import NotFoundPage from './components/NotFoundPage';
 
 Vue.use(VueRouter);
 
@@ -11,16 +11,16 @@ const routes = [
     {
         path: '/',
         name: 'Add',
-        component: AddExpense
+        component: AddPage
     },
     {
         path: '/list',
         name: 'List',
-        component: ListExpenses
+        component: ListPage
     },
     {
         path: '*',
-        component: NotFound
+        component: NotFoundPage
     }
 ];
 
