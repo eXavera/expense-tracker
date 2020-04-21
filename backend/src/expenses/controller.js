@@ -83,6 +83,7 @@ function ExpenseCtrl(expensesRepo) {
             const addedEntity = await expensesRepo.addAsync(mapper.vmToEntity(req.body));
             log.info('added expense with ID=' + addedEntity.id);
 
+            resp.status(201);
             resp.send(mapper.entityToVm(addedEntity));
         })
     );

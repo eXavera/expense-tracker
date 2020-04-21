@@ -23,7 +23,7 @@ export default {
                 })
             });
 
-            if (resp.status !== 200) {
+            if (resp.status !== 201) {
                 throw ServerResponseError(resp);
             }
         }
