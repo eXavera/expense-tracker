@@ -1,20 +1,21 @@
 <template>
     <section id="app" class="section">
         <div class="container">
-            <ErrorBox :content="errorMessage" @dismiss="dismissError"></ErrorBox>
+            <ErrorBox :content="errorMessage" @dismiss="clearError"></ErrorBox>
             <div class="tabs">
                 <ul>
                     <router-link :to="{ name: 'Add' }" tag="li"><a>Add</a></router-link>
                     <router-link :to="{ name: 'List' }" tag="li"><a>List</a></router-link>
                 </ul>
             </div>
-            <router-view :messageBox="messageBox"></router-view>
+            <router-view></router-view>
         </div>
     </section>
 </template>
 
 <script>
 import ErrorBox from './ErrorBox';
+import notificationService from '../services/notificationService';
 
 export default {
     name: 'App',
@@ -28,18 +29,18 @@ export default {
         };
     },
     methods: {
-        displayError: function(msg) {
+        setError: function(msg) {
             this.errorMessage = msg;
         },
-        dismissError: function() {
+        clearError: function() {
             this.errorMessage = '';
         }
     },
     created: function() {
-        this.messageBox = {
-            displayError: this.displayError.bind(this),
-            clear: this.dismissError.bind(this)
-        };
+        notificationService.setView({
+            setError: this.setError.bind(this),
+            clearError: this.clearError.bind(this)
+        });
     }
 };
 </script>

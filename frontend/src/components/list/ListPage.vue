@@ -20,28 +20,7 @@
 
 <script>
 import KindSelector from '../common/KindSelector';
-
-const currencyFormatter = new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: 'CZK'
-});
-const dateFormatter = new Intl.DateTimeFormat(undefined);
-const timeFormatter = new Intl.DateTimeFormat(undefined, {
-    hour: 'numeric',
-    minute: 'numeric'
-});
-
-function formatDate(dateTimeString) {
-    return dateFormatter.format(new Date(dateTimeString));
-}
-
-function formatTime(dateTimeString) {
-    return timeFormatter.format(new Date(dateTimeString));
-}
-
-function formatAmount(amount) {
-    return currencyFormatter.format(amount);
-}
+import expensesService from '../../services/expensesService';
 
 export default {
     components: {
@@ -53,7 +32,6 @@ export default {
             expenses: []
         };
     },
-    props: ['messageBox'],
     methods: {
         selectKind: function(kindCode) {
             this.selectedKindCode = kindCode;
@@ -61,20 +39,7 @@ export default {
             this.reload();
         },
         reload: async function() {
-            try {
-                const resp = await fetch('api/expense/' + this.selectedKindCode);
-                if (resp.status === 200) {
-                    this.expenses = (await resp.json()).map(i => ({
-                        date: formatDate(i.time),
-                        time: formatTime(i.time),
-                        amount: formatAmount(i.amount)
-                    }));
-                } else {
-                    this.messageBox.displayError(`Server responded with ${resp.status} ${resp.statusText}`);
-                }
-            } catch (err) {
-                this.messageBox.displayError(err);
-            }
+            this.expenses = await expensesService.getByKind(this.selectedKindCode);
         }
     }
 };

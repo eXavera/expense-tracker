@@ -35,12 +35,12 @@
 
 <script>
 import KindSelector from '../common/KindSelector';
+import expensesService from '../../services/expensesService';
 
 export default {
     components: {
         KindSelector
     },
-    props: ['messageBox'],
     data: function() {
         return {
             amount: '',
@@ -58,32 +58,18 @@ export default {
             }
 
             this.isSubmitting = true;
-            this.messageBox.clear();
 
-            try {
-                const resp = await fetch('api/expense', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        amount: this.amount,
-                        kind: this.selectedKindCode,
-                        time: new Date()
-                    })
-                });
+            const succeeded = await expensesService.create({
+                amount: this.amount,
+                kindCode: this.selectedKindCode
+            });
 
-                if (resp.status === 200) {
-                    this.amount = '';
-                    this.focusAmount();
-                } else {
-                    this.messageBox.displayError(`Server responded with ${resp.status} ${resp.statusText}`);
-                }
-            } catch (err) {
-                this.messageBox.displayError(err);
-            } finally {
-                this.isSubmitting = false;
+            if (succeeded) {
+                this.amount = '';
+                this.focusAmount();
             }
+
+            this.isSubmitting = false;
         },
         focusAmount: function() {
             this.$refs.amount.focus();
