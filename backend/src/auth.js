@@ -44,7 +44,14 @@ function setup(app, { authPathPrefix, apiPathPrefix, loginFailureRedirect, login
 
     setupGoogleAuth(callbackPath);
 
-    app.use(cookieSession({ secret: config.sessionSecert, signed: true }));
+    app.use(
+        cookieSession({
+            secret: config.sessionSecert,
+            name: 'appSession',
+            signed: true,
+            httpOnly: true
+        })
+    );
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(function verifyRequest(req, resp, next) {
