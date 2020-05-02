@@ -6,6 +6,7 @@
                 <ul>
                     <router-link :to="{ name: 'Add' }" tag="li"><a>Add</a></router-link>
                     <router-link :to="{ name: 'List' }" tag="li"><a>List</a></router-link>
+                    <router-link :to="{ name: 'Summary' }" tag="li"><a>Summary</a></router-link>
                 </ul>
             </div>
             <router-view></router-view>

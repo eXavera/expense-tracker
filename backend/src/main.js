@@ -8,6 +8,7 @@ const auth = require('./auth');
 const log = require('./log');
 
 const expenses = require('./expenses/builder');
+const summaries = require('./summaries/builder');
 
 function setup(app) {
     const apiEndpoint = '/api';
@@ -36,6 +37,7 @@ function setup(app) {
     }
 
     app.use(apiEndpoint, expenses());
+    app.use(apiEndpoint, summaries());
     app.use(apiEndpoint, (req, resp) => {
         resp.status(404).send(); // don't use HTML5 history fallback for API
     });

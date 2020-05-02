@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import AddPage from './components/add/AddPage';
 import ListPage from './components/list/ListPage';
+import SummaryPage from './components/summary/SummaryPage';
 import NotFoundPage from './components/NotFoundPage';
 
 Vue.use(VueRouter);
@@ -17,6 +18,11 @@ const routes = [
         path: '/list',
         name: 'List',
         component: ListPage
+    },
+    {
+        path: '/summary',
+        name: 'Summary',
+        component: SummaryPage
     },
     {
         path: '*',

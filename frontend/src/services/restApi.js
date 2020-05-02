@@ -27,5 +27,15 @@ export default {
                 throw ServerResponseError(resp);
             }
         }
+    },
+    summary: {
+        get: async function(periodCode) {
+            const resp = await fetch('api/summary/' + periodCode);
+            if (resp.status !== 200) {
+                throw ServerResponseError(resp);
+            }
+
+            return resp.json();
+        }
     }
 };
