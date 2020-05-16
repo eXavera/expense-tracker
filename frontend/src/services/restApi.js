@@ -1,14 +1,18 @@
 const ServerResponseError = resp => Error(`Server responded with ${resp.status} ${resp.statusText}`);
 
+const fetchJson = async function(url) {
+    const resp = await fetch(url);
+    if (resp.status !== 200) {
+        throw ServerResponseError(resp);
+    }
+
+    return resp.json();
+};
+
 export default {
     expense: {
-        get: async function(kindCode) {
-            const resp = await fetch('api/expense/' + kindCode);
-            if (resp.status !== 200) {
-                throw ServerResponseError(resp);
-            }
-
-            return resp.json();
+        get: function(kindCode) {
+            return fetchJson('api/expense/' + kindCode);
         },
         post: async function({ amount, kindCode, time }) {
             const resp = await fetch('api/expense', {
@@ -29,13 +33,8 @@ export default {
         }
     },
     summary: {
-        get: async function(periodCode) {
-            const resp = await fetch('api/summary/' + periodCode);
-            if (resp.status !== 200) {
-                throw ServerResponseError(resp);
-            }
-
-            return resp.json();
+        get: function(periodCode) {
+            return fetchJson('api/summary/' + periodCode);
         }
     }
 };
