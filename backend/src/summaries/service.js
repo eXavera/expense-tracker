@@ -1,25 +1,7 @@
-const Router = require('express').Router;
-const { validate, Joi } = require('express-validation');
-const log = require('../log');
+const Joi = require('@hapi/joi');
+const { esnureIsValid } = require('../validation');
 const expenseKinds = require('../expense-kinds');
 const periods = require('./periods');
-
-const validationRules = {
-    params: Joi.object({
-        period: Joi.string()
-            .strict(true)
-            .required()
-            .valid(...periods.map(k => k.code))
-    })
-};
-
-function hanleErrors(fn) {
-    return function(req, res, next) {
-        fn(req, res, next).catch(function(error) {
-            next(error);
-        });
-    };
-}
 
 function comparePeriods(p1, p2) {
     let result = p1.year - p2.year;
@@ -74,18 +56,25 @@ function merge(summaries) {
     return mergedSummary;
 }
 
-function SummariesCtrl(summariesRepo) {
-    const router = Router();
+const validationRules = {
+    getParams: Joi.object({
+        period: Joi.string()
+            .strict(true)
+            .required()
+            .valid(...periods.map(k => k.code))
+    })
+};
 
-    router.get(
-        '/summary/:period',
-        validate(validationRules, { keyByField: true }),
-        hanleErrors(async (req, resp) => {
+module.exports = function(dataAccess) {
+    return {
+        get: async function(params) {
+            esnureIsValid(validationRules.getParams, params);
+
             const summaries = await Promise.all(
                 expenseKinds.map(async kind => {
-                    const res = await summariesRepo.getAsync({
+                    const res = await dataAccess.load({
                         kindId: kind.id,
-                        period: req.params.period
+                        period: params.period
                     });
 
                     return {
@@ -95,15 +84,7 @@ function SummariesCtrl(summariesRepo) {
                 })
             );
 
-            const result = merge(summaries);
-
-            log.info(`returning summary with ${result.length} items`);
-
-            resp.send(result);
-        })
-    );
-
-    return router;
-}
-
-module.exports = SummariesCtrl;
+            return merge(summaries);
+        }
+    };
+};

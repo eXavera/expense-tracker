@@ -1,20 +1,19 @@
 const express = require('express');
 const html5Fallback = require('express-history-api-fallback');
 const compression = require('compression');
-const { ValidationError } = require('express-validation');
 
 const config = require('../config');
 const auth = require('./auth');
 const log = require('./log');
 
-const expenses = require('./expenses/builder');
-const summaries = require('./summaries/builder');
+const Expenses = require('./expenses');
+const Summaries = require('./summaries');
 
 function setup(app) {
     const apiEndpoint = '/api';
 
     app.use((req, _resp, next) => {
-        log.trace(`${req.method}: ${req.path}`);
+        log.info(`${req.method}: ${req.path}`);
         next();
     });
 
@@ -36,8 +35,8 @@ function setup(app) {
         app.use('/', express.static(config.staticFilesDir));
     }
 
-    app.use(apiEndpoint, expenses());
-    app.use(apiEndpoint, summaries());
+    app.use(apiEndpoint, Expenses());
+    app.use(apiEndpoint, Summaries());
     app.use(apiEndpoint, (req, resp) => {
         resp.status(404).send(); // don't use HTML5 history fallback for API
     });
@@ -49,10 +48,6 @@ function setup(app) {
 
         if (res.headersSent) {
             return next(err);
-        }
-
-        if (err instanceof ValidationError) {
-            return res.status(err.statusCode).json(err);
         }
 
         return res.status(500).json(err);

@@ -1,5 +1,5 @@
-const ExpensesRepo = function(knex) {
-    const addAsync = async function(newExpense) {
+const ExpensesDAO = function(knex) {
+    const add = async function(newExpense) {
         const result = await knex('Expense').insert({
             amount: newExpense.amount,
             time: Math.floor(newExpense.time.getTime() / 1000),
@@ -12,7 +12,7 @@ const ExpensesRepo = function(knex) {
         };
     };
 
-    const getAsync = async function({ kindId }) {
+    const load = async function({ kindId }) {
         const items = await knex('Expense')
             .select('id', 'amount', 'kindId', 'time')
             .where({
@@ -29,9 +29,9 @@ const ExpensesRepo = function(knex) {
     };
 
     return {
-        addAsync,
-        getAsync
+        add,
+        load
     };
 };
 
-module.exports = ExpensesRepo;
+module.exports = ExpensesDAO;

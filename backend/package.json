@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bulma": "^0.8.0",
     "compression": "^1.7.4",
     "connect-ensure-login": "^0.1.1",
@@ -20,7 +21,6 @@
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
     "express-session": "^1.17.0",
-    "express-validation": "^3.0.2",
     "knex": "^0.20.15",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",

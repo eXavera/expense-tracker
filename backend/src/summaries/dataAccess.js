@@ -30,8 +30,8 @@ const periodHandlers = {
     }
 };
 
-const SummariesRepo = function(knex) {
-    const getAsync = async function({ kindId, period }) {
+const SummariesDAO = function(knex) {
+    const load = async function({ kindId, period }) {
         const periodHandler = periodHandlers[period];
         const groupBy = `strftime('${periodHandler.sqlFormat}', date(time, 'unixepoch'))`;
 
@@ -54,8 +54,8 @@ const SummariesRepo = function(knex) {
     };
 
     return {
-        getAsync
+        load
     };
 };
 
-module.exports = SummariesRepo;
+module.exports = SummariesDAO;
