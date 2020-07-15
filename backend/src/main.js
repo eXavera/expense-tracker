@@ -1,6 +1,5 @@
 const express = require('express');
 const html5Fallback = require('express-history-api-fallback');
-const compression = require('compression');
 
 const config = require('../config');
 const auth = require('./auth');
@@ -16,8 +15,6 @@ function setup(app) {
         log.info(`${req.method}: ${req.path}`);
         next();
     });
-
-    app.use(compression());
 
     auth.setup(app, {
         authPathPrefix: '/auth',
