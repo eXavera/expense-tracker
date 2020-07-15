@@ -11,6 +11,8 @@ const Summaries = require('./summaries');
 function setup(app) {
     const apiEndpoint = '/api';
 
+    app.disable('x-powered-by');
+
     app.use((req, _resp, next) => {
         log.info(`${req.method}: ${req.path}`);
         next();
